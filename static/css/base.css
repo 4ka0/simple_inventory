@@ -1,0 +1,158 @@
+body {
+    background-color: #f8f9fa;
+    min-width: 700px;
+}
+
+body, h5, h6, th, a {
+    font-weight: 300;
+}
+
+a:hover {
+    color: #555b6e;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+h5, h6, p, li, a, th, td {
+    color: #555b6e;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.navbar-brand {
+    font-size: 1.8em;
+}
+
+.card-header {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.alert {
+    font-size: 0.8em;
+}
+
+.nav-list {
+    font-size: 1.2em;
+    line-height: 2em;
+}
+
+.table-header-bg-1 {
+    background-color:#fffde1;
+}
+
+.table-header-bg-2 {
+    background-color:#eaffe1;
+}
+
+.table-header-bg-3 {
+    background-color:#e1feff;
+}
+
+.table-header-bg-4 {
+    background-color:#e1f8ff;
+}
+
+.table-body-bg {
+    background-color: #fff;
+}
+
+.form-error {
+    color: #da3749;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.asteriskField {
+    display: none;
+}
+
+.file-upload-btn {
+    border: 1px solid #ced4da;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.sidebar {
+    width: 170px;
+    padding-top: 84px;
+    text-align: left;
+    background-color: #F8F9FA;
+    border-right: solid;
+    border-width: 1px;
+    border-color:#dee2e6;
+    height: 100vh;
+    color: #a1aeb5;
+}
+
+.banner {
+    width: auto;
+    padding-top: 24px;
+    padding-bottom: 16px;
+    padding-left: 20px;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color:#dee2e6;
+    background-color: #f8f9fa;
+}
+
+.nav-link {
+    width: auto;
+    margin-bottom: 18px;
+    padding: 12px;
+    border-radius: 6px;
+    margin-left: 12px;;
+    margin-right: 12px;;
+}
+
+.nav-link:hover {
+    background-color: #e2eaee;
+  }
+
+.nav-link-active {
+    background-color: #e2eaee;
+}
+
+.main-col {
+    padding: 0px;
+}
+
+.login-info {
+    float: right;
+    padding-top: 12px;
+    padding-right: 16px;
+    text-align: center;
+}
+
+.logout {
+    color: #e76f51;
+}
+
+.logout:hover {
+    color: #e76f51;
+}
+
+.col-center-align {
+    text-align: center;
+}
+
+.code {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    color: #e76f51;
+    background-color: #f8f9fa;
+    padding: 3px 6px 3px 6px;
+}
+
+.block {
+    width: 248px;
+    word-wrap: break-word;
+}
+
+#total-sales {
+    color: #e76f51;
+}

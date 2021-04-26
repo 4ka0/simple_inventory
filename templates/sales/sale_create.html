@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;Add New Sale{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    New Sale
+                </div>
+
+                <div class="card-body">
+
+                    <p><i>*Note that the new sale record will be not be saved if an identical sale record already exists.</i></p>
+
+                    <form method="POST" novalidate>
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            {{ form.fruit|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.quantity|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.sold_on|as_crispy_field }}
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'sale_list' %}"  class="btn btn-primary" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-primary mx-2">Add</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

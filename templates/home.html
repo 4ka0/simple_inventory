@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row my-5 mx-3">
+
+        <div class="col mx-3">
+
+            <p>Welcome to your very own fairly simple inventory management system.</p>
+            <p>This has been created based on the premise that you own a fruit shop (my apologies if you don't).</p>
+
+            <p>Here you can:</p>
+
+            <ul>
+                <li>add, edit, and delete stock information;</li>
+                <li>add, edit, and delete sales information;</li>
+                <li>batch upload sales information using a csv file; and</li>
+                <li>view statistics for the last three days or three months.</li>
+            </ul>
+
+            {% if user.is_authenticated %}
+                <p>
+                    Feel free to add some &#127819;&#127823;&#127818;, generate some sales, and check out the stats.
+                </p>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+                <p>
+                    But be careful, you must be logged in to do any of this (security is tight here &#129299;).<br>
+                    Fortunately, you can find the login credentials in the top right corner (but not that tight &#128549;).
+                </p>
+
+                <a href="{% url 'login' %}"  class="btn btn-primary mr-2" role="button">Log in</a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

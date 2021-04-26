@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;Update Sale{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    Update Sale
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST" novalidate>
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            果物
+                            <input class="form-control" type="text" placeholder="{{ sale.fruit_name }}" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.quantity|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.sold_on|as_crispy_field }}
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'sale_list' %}"  class="btn btn-primary" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-primary mx-2">Update</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

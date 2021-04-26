@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;Sales Batch Upload{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    Sales Batch Upload
+                </div>
+
+                <div class="card-body">
+
+                    <p>You can upload multiple sale records at the same time using a single csv (comma-separated values) file in which each line has the format shown below.</p>
+
+                    <p><span class="code">fruit,quantity,proceeds,date/time</span></p>
+
+                    <p>For example:</p>
+
+                    <p class="code block">
+                        apple,1,100,2021-04-01 10:00<br>
+                        lemon,2,200,2021-04-02 11:00<br>
+                        banana,3,300,2021-04-03 12:00
+                    </p>
+
+                    <p>
+                        *Note that the following entries will be ignored:<br>
+                        - Entries that do not have the above format<br>
+                        - Entries that are identical to an already existing record
+                    </p>
+
+                    <form method="POST" enctype="multipart/form-data" novalidate>
+
+                        {% csrf_token %}
+
+                        <!-- File upload field -->
+                        <div class="form-row mt-2">
+
+                            <div class="input-group">
+
+                                <label class="input-group-btn" for="{{ form.file_name.id_for_label }}">
+
+                                    <span class="btn btn-outline-secondary file-upload-btn">
+                                        Browse
+                                        <input id="{{ form.file_name.id_for_label }}" name="{{ form.file_name.html_name }}" type="file" style="display:none;">
+                                    </span>
+
+                                </label>
+
+                                <!-- Field displaying selected file -->
+                                <input type="text" class="form-control" readonly="">
+                            </div>
+
+                        </div>
+
+                        {% if form.file_name.errors %}
+                            {% for error in form.file_name.errors %}
+                                <div class="form-error mt-2">
+                                    {{ error|striptags }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- 「戻る」と「アップロード」のボタン -->
+                        <div class="text-center mt-4">
+                            <a href="{% url 'sale_list' %}"  class="btn btn-primary mr-2" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ユーザーが選択したファイルを表示するためのjquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).on('change', ':file', function() {
+            var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.parent().parent().next(':text').val(label);
+        });
+    </script>
+
+{% endblock %}

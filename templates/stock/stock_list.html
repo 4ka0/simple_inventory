@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;All Stock{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row my-5 mx-3">
+
+        <div class="col mx-3">
+
+            <!-- 在庫がある場合、在庫のテーブルを表示する -->
+
+            {% if fruits %}
+
+                <h6 class="mb-4"><i>*All stock items are listed in reverse chronological order, i.e. most recently updated first.</i></h6>
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered">
+
+                        <thead class="table-header-bg-1">
+                            <tr>
+                                <th scope="col">Fruit</th>
+                                <th scope="col">Price (¥)</th>
+                                <th scope="col">Registered</th>
+                                <th scope="col">Updated</th>
+                                <th scope="col" class="col-center-align">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="table-body-bg">
+
+                            {% for fruit in fruits %}
+
+                                <tr>
+                                    <td>
+                                        {{ fruit.name|capfirst }}
+                                    </td>
+
+                                    <td>
+                                        {{ fruit.price|intcomma }}
+                                    </td>
+
+                                    <td>
+                                        {{ fruit.created_on|date:"Y-m-d" }}, {{ fruit.created_on|time:"H:i" }}
+                                    </td>
+
+                                    <td>
+                                        {{ fruit.updated_on|date:"Y-m-d" }}, {{ fruit.updated_on|time:"H:i" }}
+                                    </td>
+
+                                    <td class="col-center-align">
+                                        <!-- Edit icon -->
+                                        <a href="{% url 'stock_update' fruit.pk %}"  class="btn btn-outline-primary btn-sm mr-2" role="button">Update</a>
+                                        &nbsp;
+                                        <!-- Delete icon -->
+                                        <form action="{% url 'stock_delete' fruit.pk %}" method="POST" style="display:inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                        </form>
+
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- 新規追加のボタン -->
+                <div class="text-center">
+                    <a href="{% url 'stock_create' %}"  class="btn btn-primary" role="button">Add New Stock</a>
+                </div>
+
+            <!-- 在庫がない場合、通知を表示する -->
+
+            {% else %}
+
+                <p>No stock information has been added. To do so, please use the button below.</p>
+                <a href="{% url 'stock_create' %}" class="btn btn-primary mt-3 mr-2" role="button">Add New Stock</a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}

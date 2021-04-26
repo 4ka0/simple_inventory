@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;Update Stock{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-4">
+
+            <div class="card">
+
+                <div class="card-header">
+                    Update Fruit
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST" novalidate>
+
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            {{ form.name|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.price|as_crispy_field }}
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="{% url 'stock_list' %}"  class="btn btn-primary" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-primary mx-2">Update</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

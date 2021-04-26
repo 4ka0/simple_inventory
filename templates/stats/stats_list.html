@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block page-trail %}&nbsp;&nbsp;>&nbsp;&nbsp;Statistics{% endblock page-trail %}
+
+{% block content %}
+
+    <div class="row my-5 mx-3">
+
+        <div class="col mx-3">
+
+            <!-- 累計の統計 -->
+
+            {% if total_proceeds %}
+
+                <div class="mb-5">
+                    <h5>Total sales: <span id="total-sales">¥{{ total_proceeds|intcomma }}</span></h5>
+                </div>
+
+                <!-- 日別の統計 -->
+
+                <div class="mb-4">
+
+                    <p>Sales for the last three days:</p>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered">
+
+                            <thead class="table-header-bg-3">
+                                <tr>
+                                    <th scope="col">Day</th>
+                                    <th scope="col">Proceeds</th>
+                                    <th scope="col">Breakdown (in descending order of proceeds with quantities in parentheses)</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body-bg">
+
+                                {% for row in day_sales %}
+
+                                    <tr>
+                                        <td>{{ row.date|date:"Y-m-d" }}</td>
+                                        <td>¥{{ row.proceeds|intcomma }}</td>
+                                        <td>{{ row.breakdown_str }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- 月別の統計 -->
+
+                <div class="mb-4">
+
+                    <p>Sales for the last three months:</p>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered">
+
+                            <thead class="table-header-bg-4">
+                                <tr>
+                                    <th scope="col">Month</th>
+                                    <th scope="col">Proceeds</th>
+                                    <th scope="col">Breakdown (in descending order of proceeds with quantities in parentheses)</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="table-body-bg">
+
+                                {% for row in month_sales %}
+
+                                    <tr>
+                                        <td>{{ row.date|date:"Y-m" }}</td>
+                                        <td>¥{{ row.proceeds|intcomma }}</td>
+                                        <td>{{ row.breakdown_str }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <p>No statistics are shown as no sales information has been added. To do so, please use one of the buttons below.</p>
+                <a href="{% url 'sale_create' %}" class="btn btn-primary mt-3 mr-2" role="button">Add New Sale</a>
+                &nbsp;
+                <a href="{% url 'sale_upload' %}" class="btn btn-primary mt-3" role="button">Batch Upload</a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endblock %}
