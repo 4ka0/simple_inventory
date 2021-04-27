@@ -5,12 +5,12 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('home.urls')),
-    path('stock/', include('stock.urls')),
-    path('sales/', include('sales.urls')),
-    path('stats/', include('stats.urls')),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("", include("home.urls")),
+    path("stock/", include("stock.urls")),
+    path("sales/", include("sales.urls")),
+    path("stats/", include("stats.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
