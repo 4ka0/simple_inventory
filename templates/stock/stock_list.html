@@ -9,7 +9,7 @@
 
         <div class="col mx-3">
 
-            <!-- 在庫がある場合、在庫のテーブルを表示する -->
+            <!-- If there is stock information, display the table -->
 
             {% if fruits %}
 
@@ -51,15 +51,16 @@
                                     </td>
 
                                     <td class="col-center-align">
+
                                         <!-- Edit icon -->
                                         <a href="{% url 'stock_update' fruit.pk %}"  class="btn btn-outline-primary btn-sm mr-2" role="button">Update</a>
                                         &nbsp;
+                                        
                                         <!-- Delete icon -->
                                         <form action="{% url 'stock_delete' fruit.pk %}" method="POST" style="display:inline">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                         </form>
-
 
                                     </td>
 
@@ -73,12 +74,12 @@
 
                 </div>
 
-                <!-- 新規追加のボタン -->
+                <!-- Button to add new stock -->
                 <div class="text-center">
                     <a href="{% url 'stock_create' %}"  class="btn btn-primary" role="button">Add New Stock</a>
                 </div>
 
-            <!-- 在庫がない場合、通知を表示する -->
+            <!-- If there is stock information, display a notification -->
 
             {% else %}
 

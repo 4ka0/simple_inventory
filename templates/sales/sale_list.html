@@ -9,7 +9,7 @@
 
         <div class="col mx-3">
 
-            <!-- 販売情報がある場合、在庫のテーブルを表示する -->
+            <!-- If there is sales information, display the table -->
 
             {% if sales %}
 
@@ -39,12 +39,12 @@
                                 <td>{{ sale.proceeds|intcomma }}</td>
                                 <td>{{ sale.sold_on|date:"Y-m-d" }}, {{ sale.sold_on|time:"H:i" }}</td>
                                 <td class="col-center-align">
-                                    <!-- 編集バトン -->
+                                    <!-- Edit button -->
                                     <a href="{% url 'sale_update' sale.pk %}"  class="btn btn-outline-primary btn-sm mr-2" role="button">Update</a>
 
                                     &nbsp;
 
-                                    <!-- 削除バトン -->
+                                    <!-- Delete button -->
                                     <form action="{% url 'sale_delete' sale.pk %}" method="POST" style="display:inline">
                                         {% csrf_token %}
                                         <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
@@ -61,14 +61,14 @@
 
             </div>
 
-            <!-- 新規追加とCSVファイルアップロードのボタン -->
+            <!-- Add new sale button and csv file upload button -->
             <div class="text-center">
                 <a href="{% url 'sale_create' %}" class="btn btn-primary mr-2" role="button">Add New Sale</a>
                 &nbsp;
                 <a href="{% url 'sale_upload' %}" class="btn btn-primary" role="button">Batch Upload</a>
             </div>
 
-            <!-- 販売情報がない場合、通知を表示する -->
+            <!-- If there is no sales information, display a notification -->
 
             {% else %}
 

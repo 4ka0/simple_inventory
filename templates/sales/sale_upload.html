@@ -19,7 +19,7 @@
 
                     <p>You can upload multiple sale records at the same time using a single csv (comma-separated values) file in which each line has the format shown below.</p>
 
-                    <p><span class="code">fruit,quantity,proceeds,date/time</span></p>
+                    <p><span class="code">fruit,quantity,proceeds,date time</span></p>
 
                     <p>For example:</p>
 
@@ -31,6 +31,7 @@
 
                     <p>
                         *Note that the following entries will be ignored:<br>
+                        - Duplicate entries in the csv file<br>
                         - Entries that do not have the above format<br>
                         - Entries that are identical to an already existing record
                     </p>
@@ -59,6 +60,7 @@
 
                         </div>
 
+                        <!-- Display form errors if any -->
                         {% if form.file_name.errors %}
                             {% for error in form.file_name.errors %}
                                 <div class="form-error mt-2">
@@ -67,7 +69,7 @@
                             {% endfor %}
                         {% endif %}
 
-                        <!-- 「戻る」と「アップロード」のボタン -->
+                        <!-- Cancel and upload buttons -->
                         <div class="text-center mt-4">
                             <a href="{% url 'sale_list' %}"  class="btn btn-primary mr-2" role="button">Cancel</a>
                             <button type="submit" class="btn btn-primary">Upload</button>
@@ -83,7 +85,7 @@
 
     </div>
 
-    <!-- ユーザーが選択したファイルを表示するためのjquery -->
+    <!-- jquery for displaying a file selected by the user -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         $(document).on('change', ':file', function() {

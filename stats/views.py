@@ -9,25 +9,27 @@ from sales.models import Sale
 class Row:
     """
     Class representing a row in the table to be displayed on the stats page,
-    including sales breakdown data per day and per month.
+    including sales details data per day and per month.
     """
 
-    def __init__(self, date, proceeds, sales, breakdown, breakdown_str):
+    def __init__(self, date, proceeds, sales, details, details_str):
         self.date = date
         self.proceeds = proceeds
         self.sales = sales
-        self.breakdown = breakdown
-        self.breakdown_str = breakdown_str
+        # Dict for holding details information
+        self.details = details
+        # Above dict converted to a string
+        self.details_str = details_str
 
 
-def get_total_proceeds(sales):
+def calculate_total_proceeds(sales):
     proceeds = [sale.proceeds for sale in sales]
     return sum(proceeds)
 
 
 def get_sales_for_period(sales, period):
     """
-    Note regarding time in the code below:
+    Note regarding "time" in the code below:
     Within code used in a Django view (i.e. this file), time is represented as
     datetime objects that are UTC timezone-aware. However, in order to get and
     sort Sale objects correctly for outputting in the statistics template, it
@@ -67,17 +69,19 @@ def sort_sales_by_day(sales):
     two_days_b4 = now_day - dateutil.relativedelta.relativedelta(days=2)
 
     row1 = Row(
-        date=now_day, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=now_day, proceeds=0, sales=[], details={}, details_str=""
     )
     row2 = Row(
-        date=one_day_b4, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=one_day_b4, proceeds=0, sales=[], details={}, details_str=""
     )
     row3 = Row(
-        date=two_days_b4, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=two_days_b4, proceeds=0, sales=[], details={}, details_str=""
     )
 
     for sale in sales:
+
         sold_on_jpt = timezone.localtime(sale.sold_on).date()  # Convert to JPT
+
         if sold_on_jpt == now_day:
             row1.sales.append(sale)
         elif sold_on_jpt == one_day_b4:
@@ -98,19 +102,18 @@ def sort_sales_by_month(sales):
     two_month_b4 = (now_month - dateutil.relativedelta.relativedelta(months=2))
 
     row1 = Row(
-        date=now_month, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=now_month, proceeds=0, sales=[], details={}, details_str=""
     )
     row2 = Row(
-        date=one_month_b4, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=one_month_b4, proceeds=0, sales=[], details={}, details_str=""
     )
     row3 = Row(
-        date=two_month_b4, proceeds=0, sales=[], breakdown={}, breakdown_str=""
+        date=two_month_b4, proceeds=0, sales=[], details={}, details_str=""
     )
 
     for sale in sales:
 
-        # Convert sale.sold_on date to JPT timezone
-        sold_on_jpt = timezone.localtime(sale.sold_on)
+        sold_on_jpt = timezone.localtime(sale.sold_on)  # Convert to JPT
 
         if sold_on_jpt >= now_month:
             row1.sales.append(sale)
@@ -125,27 +128,25 @@ def sort_sales_by_month(sales):
     return [row1, row2, row3]
 
 
-def build_sales_breakdown(sales):
+def build_sales_details(sales):
 
     sorted_sales = []
 
     for row in sales:
         if row.sales:
 
-            # MOVE THIS CODE INTO SEPARATE CLASS FUNCTIONS !!!
-
-            # この行のデータの総売り上げを取得する
+            # Get total proceeds for this row
             all_proceeds = [sale.proceeds for sale in row.sales]
             row.proceeds = sum(all_proceeds)
 
-            # 内訳dictを構造する
+            # Build the details dict
             # key = fruit name (str), val = [proceeds (int), quantity (int)]
             all_fruit_names = [sale.fruit_name for sale in row.sales]
             unique_fruit_names = set(all_fruit_names)
             for name in unique_fruit_names:
-                row.breakdown[name] = []
+                row.details[name] = []
 
-            # 内訳のために各フルーツの総売り上げ・量を取得する
+            # Get total proceeds and quantity for each fruit in this row
             for name in unique_fruit_names:
                 total_proceeds = 0
                 quantity = 0
@@ -153,31 +154,31 @@ def build_sales_breakdown(sales):
                     if sale.fruit_name == name:
                         total_proceeds += sale.proceeds
                         quantity += sale.quantity
-                row.breakdown[name].append(total_proceeds)
-                row.breakdown[name].append(quantity)
+                row.details[name].append(total_proceeds)
+                row.details[name].append(quantity)
 
-            # 内訳dictを売上高順に並べ替える
-            sorted_breakdown = dict(
+            # Sort the details dict according in descending order of proceeds
+            sorted_details = dict(
                 sorted(
-                    row.breakdown.items(),
+                    row.details.items(),
                     key=lambda item: item[1],
                     reverse=True,
                 )
             )
-            row.breakdown = sorted_breakdown
+            row.details = sorted_details
 
-            # Convert the breakdown dict into a str
-            for entry in row.breakdown:
-                row.breakdown_str += (
+            # Convert the details dict into a str
+            for entry in row.details:
+                row.details_str += (
                     entry.capitalize()
                     + ": ¥"
-                    + str(row.breakdown[entry][0])
+                    + str(row.details[entry][0])
                     + " ("
-                    + str(row.breakdown[entry][1])
+                    + str(row.details[entry][1])
                     + "), "
                 )
-            # Remove the trailing comma and space
-            row.breakdown_str = row.breakdown_str[:-2]
+            # Remove trailing comma and space
+            row.details_str = row.details_str[:-2]
 
         sorted_sales.append(row)
 
@@ -189,17 +190,17 @@ def stats_list(request):
 
     sales = Sale.objects.all()
 
-    total_proceeds = get_total_proceeds(sales)
+    total_proceeds = calculate_total_proceeds(sales)
 
-    # 直近3ヶ月間の売上を取得する
-    month_sales = get_sales_for_period(sales, "month")
-    month_sales = sort_sales_by_month(month_sales)
-    month_sales = build_sales_breakdown(month_sales)
-
-    # 直近3日間の売上を取得する
+    # Get sales for most recent three days
     day_sales = get_sales_for_period(sales, "days")
     day_sales = sort_sales_by_day(day_sales)
-    day_sales = build_sales_breakdown(day_sales)
+    day_sales = build_sales_details(day_sales)
+
+    # Get sales for most recent three months
+    month_sales = get_sales_for_period(sales, "month")
+    month_sales = sort_sales_by_month(month_sales)
+    month_sales = build_sales_details(month_sales)
 
     return render(
         request,

@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Fruit(models.Model):
 
-    # unique=Trueは、同じ名前のフルーツを作ることができないようにするために使用されます。
+    # unique=True ensures that fruits having identical names can't be created
     name = models.CharField(max_length=100, unique=True)
 
     price = models.PositiveIntegerField(

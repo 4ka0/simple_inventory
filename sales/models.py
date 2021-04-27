@@ -12,7 +12,7 @@ from stock.models import Fruit
 
 def reject_future_date_time(value):
     """
-    下記のSaleモデルの「sold_on」フィールドの検証方法として使用されます。
+    Validation method for the "sold_on" field of the Sale model.
     """
     now = timezone.now()
     if value > now:
@@ -21,16 +21,16 @@ def reject_future_date_time(value):
 
 class Sale(models.Model):
 
-    # 「related_name=sales」を使用すると、テンプレートに以下の記述が可能になります。
-    #  {% for sale in fruit.sales.all %}
+    # on_delete=models.SET_NULL is used to ensure that this Sale object is not
+    # deleted if the parent Fruit object is deleted.
     fruit = models.ForeignKey(
         Fruit,
         related_name="sales",
-        on_delete=models.SET_NULL,  # 親のFruitオブジェクトが削除されても、このSaleオブジェクトは削除されません。
+        on_delete=models.SET_NULL,
         null=True,
     )
 
-    # 親のFruitオブジェクトが削除された場合に、フルーツの名称を保持するために使用されます。
+    # Used to retain the name of the parent fruit even if the fruit is deleted.
     fruit_name = models.CharField(max_length=100)
 
     quantity = models.PositiveIntegerField(
@@ -38,13 +38,13 @@ class Sale(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(999999999999)],
     )
 
-    # このSaleオブジェクトが作成されたときの、親のFruitオブジェクトの単価です。
+    # The price of the parent Fruit object when this Sale object is created.
     fruit_price_when_sold = models.PositiveIntegerField(blank=True, null=True)
 
-    # このSaleオブジェクトが作成されたときに受け取ったお金の量（売り上げ）です。
+    # The amount of money received when this Sale object is created.
     proceeds = models.PositiveIntegerField(blank=True, null=True)
 
-    # 将来の日時が入力されないようにするカスタムバリデータが含まれている。
+    # Includes a custom validator to ensure that future dates are not entered.
     sold_on = models.DateTimeField(validators=[reject_future_date_time])
 
     class Meta:
@@ -55,7 +55,7 @@ class Sale(models.Model):
         return f"{self.fruit}"
 
     def save(self, *args, **kwargs):
-        # オブジェクトの作成時にのみ実行され、更新時には実行されません。
+        # Only executed when the Sale object is created, not when updated.
         if self._state.adding is True:
             self.fruit_name = self.fruit.name
         super(Sale, self).save(*args, **kwargs)
@@ -92,7 +92,8 @@ class CsvUploadFile(models.Model):
     def __str__(self):
         return str(self.file_name)
 
-    # アップロードされたCSVファイルをストレージから削除するためにデフォルトのdelete()をオーバーライドする
+    # The default delete function is overidden to ensure that the associated
+    # user-uploaded csv file is deleted as well as the object.
     def delete(self, *args, **kwargs):
         self.file_name.delete()
         super().delete(*args, **kwargs)

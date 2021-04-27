@@ -13,7 +13,7 @@ from .views import (
     get_sales_for_period,
     sort_sales_by_day,
     sort_sales_by_month,
-    build_sales_breakdown,
+    build_sales_details,
 )
 
 from freezegun import freeze_time
@@ -449,38 +449,38 @@ class StatsListTests(TestCase):
                 self.assertTrue(sale.sold_on < upper_bound)
 
     @freeze_time("2020-04-17")
-    def test_build_sales_breakdown_by_day(self):
+    def test_build_sales_details_by_day(self):
         day_sales = get_sales_for_period(self.sales, "days")
         sorted_sales = sort_sales_by_day(day_sales)
-        day_sales_with_bd = build_sales_breakdown(sorted_sales)
+        day_sales_with_bd = build_sales_details(sorted_sales)
         self.assertEqual(
-            sorted_sales[0].breakdown_str,
+            sorted_sales[0].details_str,
             "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
         )
         self.assertEqual(
-            sorted_sales[1].breakdown_str,
+            sorted_sales[1].details_str,
             "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
         )
         self.assertEqual(
-            sorted_sales[2].breakdown_str,
+            sorted_sales[2].details_str,
             "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
         )
 
     @freeze_time("2020-04-17")
-    def test_build_sales_breakdown_by_month(self):
+    def test_build_sales_details_by_month(self):
         month_sales = get_sales_for_period(self.sales, "months")
         sorted_sales = sort_sales_by_month(month_sales)
-        month_sales_with_bd = build_sales_breakdown(sorted_sales)
+        month_sales_with_bd = build_sales_details(sorted_sales)
         self.assertEqual(
-            sorted_sales[0].breakdown_str,
+            sorted_sales[0].details_str,
             "banana: 2700円 (15), kiwi: 1920円 (12), orange: 1260円 (9), lemon: 720円 (6), apple: 300円 (3)",
         )
         self.assertEqual(
-            sorted_sales[1].breakdown_str,
+            sorted_sales[1].details_str,
             "banana: 1800円 (10), kiwi: 1280円 (8), orange: 840円 (6), lemon: 480円 (4), apple: 200円 (2)",
         )
         self.assertEqual(
-            sorted_sales[2].breakdown_str,
+            sorted_sales[2].details_str,
             "banana: 1800円 (10), kiwi: 1280円 (8), orange: 840円 (6), lemon: 480円 (4), apple: 200円 (2)",
         )
 

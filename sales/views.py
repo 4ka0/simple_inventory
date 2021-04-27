@@ -27,7 +27,7 @@ def sale_create(request):
             sale.retrieve_fruit_price()
             sale.calculate_proceeds()
 
-            # The new record is not be saved if an identical sale record already exists
+            # New record not saved if an identical sale record already exists
             if not Sale.objects.filter(
                 fruit=sale.fruit,
                 quantity=sale.quantity,
@@ -72,13 +72,13 @@ def convert_str_to_tz_aware_datetime(date_str):
     Helper function for sale_upload().
     """
 
-    # Convert str to naive_datetime
+    # Convert str to timezone-naive datetime
     try:
         naive_datetime = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
     except ValueError as e:
         print(e)
 
-    # Convert naive to aware
+    # Convert timezone-naive datetime to timezone-aware datetime
     tokyo = pytz.timezone("Asia/Tokyo")
     aware_datetime = tokyo.localize(naive_datetime)
 
@@ -87,13 +87,13 @@ def convert_str_to_tz_aware_datetime(date_str):
 
 def check_row_content(row):
     """
-    Helper function for sale_upload().
-    Checks the elements included in each row of a csv file and the formatting thereof.
+    Helper function for sale_upload(). Checks the elements included in
+    each row of a csv file and the formatting thereof.
     """
     if len(row) != 4:
         return False
 
-    # 対応するFruitオブジェクトが存在することを確認する
+    # Check whether a corresponding Fruit object exists
     try:
         Fruit.objects.get(name=row[0])
     except Exception:
@@ -105,17 +105,17 @@ def check_row_content(row):
     if not row[2].isdigit():
         return False
 
-    # 日時要素が正しいフォーマットであることを確認する（2021-03-24 10:10）
+    # Check whether the datetime element has the correct format
     if not bool(re.match(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$", row[3])):
         return False
 
-    # 日時要素が将来の日時でないことを確認する
+    # Check whether the datetime element is in the future
     sold_date = convert_str_to_tz_aware_datetime(row[3])
     if sold_date > timezone.now():
         return False
 
-    # 同じレコードがデータベースに既に存在していないかどうかを確認する
-    # DBに登録されている日時と比較するために、UTCに変換する必要があります。
+    # Check whether the same record already exists in the DB
+    # Necessary to change to UTC time to compare with datetime in the DB
     utc_sold_date = sold_date.astimezone(pytz.utc)
     if Sale.objects.filter(
         fruit_name=row[0],
@@ -130,12 +130,12 @@ def check_row_content(row):
 
 def generate_sale_objects(file_content):
     """
-    sale_uploadのヘルパー関数。
-    csvファイルの各行をSaleオブジェクトに変換します。
+    Helper function for sale_upload().
+    Converts each row in a csv file into a Sale object.
     """
     for row in file_content:
 
-        # check_row_content()のチェックに合格しない行は無視されます
+        # Rows that don't pass the checks in check_row_content() are ignored
         verified = check_row_content(row)
 
         if verified:
@@ -163,18 +163,18 @@ def sale_upload(request):
             form.save()
             csv_file = CsvUploadFile.objects.latest("uploaded_on")
 
-            # CSVファイルからコンテンツを読み取る
+            # Read in content from the CSV file
             file_content = []
             with open(csv_file.file_name.path, "r") as f:
                 reader = csv.reader(f)
                 for row in reader:
-                    if row not in file_content:  # 重複する行は無視される
+                    if row not in file_content:  # Duplicate rows are ignored
                         file_content.append(row)
 
-            # CSVコンテンツからSaleオブジェクトを作成する
+            # Create Sale objects from the csv content
             generate_sale_objects(file_content)
 
-            # アップロードされたCSVファイルを削除する
+            # Delete the uploaded csv file
             csv_file.delete()
 
             return redirect("sale_list")

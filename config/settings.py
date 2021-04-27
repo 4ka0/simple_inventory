@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,10 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # サードパーティ
+    # Third party app
     'crispy_forms',
 
-    # ローカル
+    # Local apps
     'users',
     'home',
     'stock',

@@ -9,15 +9,15 @@
 
         <div class="col mx-3">
 
-            <!-- 累計の統計 -->
-
             {% if total_proceeds %}
+
+                <!-- The total proceeds -->
 
                 <div class="mb-5">
                     <h5>Total sales: <span id="total-sales">¥{{ total_proceeds|intcomma }}</span></h5>
                 </div>
 
-                <!-- 日別の統計 -->
+                <!-- Statistics for last three days -->
 
                 <div class="mb-4">
 
@@ -31,7 +31,7 @@
                                 <tr>
                                     <th scope="col">Day</th>
                                     <th scope="col">Proceeds</th>
-                                    <th scope="col">Breakdown (in descending order of proceeds with quantities in parentheses)</th>
+                                    <th scope="col">Breakdown (descending order of proceeds, quantities in parentheses)</th>
                                 </tr>
                             </thead>
 
@@ -42,7 +42,7 @@
                                     <tr>
                                         <td>{{ row.date|date:"Y-m-d" }}</td>
                                         <td>¥{{ row.proceeds|intcomma }}</td>
-                                        <td>{{ row.breakdown_str }}</td>
+                                        <td>{{ row.details_str }}</td>
                                     </tr>
 
                                 {% endfor %}
@@ -55,7 +55,7 @@
 
                 </div>
 
-                <!-- 月別の統計 -->
+                <!-- Statistics for last three months -->
 
                 <div class="mb-4">
 
@@ -69,7 +69,7 @@
                                 <tr>
                                     <th scope="col">Month</th>
                                     <th scope="col">Proceeds</th>
-                                    <th scope="col">Breakdown (in descending order of proceeds with quantities in parentheses)</th>
+                                    <th scope="col">Breakdown (descending order of proceeds, quantities in parentheses)</th>
                                 </tr>
                             </thead>
 
@@ -80,7 +80,7 @@
                                     <tr>
                                         <td>{{ row.date|date:"Y-m" }}</td>
                                         <td>¥{{ row.proceeds|intcomma }}</td>
-                                        <td>{{ row.breakdown_str }}</td>
+                                        <td>{{ row.details_str }}</td>
                                     </tr>
 
                                 {% endfor %}
@@ -94,6 +94,8 @@
                 </div>
 
             {% else %}
+
+                <!-- If no sales are availabe to be converted into stats -->
 
                 <p>No statistics are shown as no sales information has been added. To do so, please use one of the buttons below.</p>
                 <a href="{% url 'sale_create' %}" class="btn btn-primary mt-3 mr-2" role="button">Add New Sale</a>
