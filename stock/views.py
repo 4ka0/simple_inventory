@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Fruit
 from .forms import StockForm
@@ -8,6 +9,16 @@ from .forms import StockForm
 @login_required
 def stock_list(request):
     fruits = Fruit.objects.order_by("-updated_on")
+    page = request.GET.get('page', 1)
+    paginator = Paginator(fruits, 10)
+
+    try:
+        fruits = paginator.page(page)
+    except PageNotAnInteger:
+        fruits = paginator.page(1)
+    except EmptyPage:
+        fruits = paginator.page(paginator.num_pages)
+
     return render(request, "stock/stock_list.html", {"fruits": fruits})
 
 

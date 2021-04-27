@@ -156,3 +156,7 @@ td {
 #total-sales {
     color: #e76f51;
 }
+
+.pagination-block, .table-footer-buttons {
+    float: left;
+}
