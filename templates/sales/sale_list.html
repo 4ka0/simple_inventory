@@ -13,60 +13,108 @@
 
             {% if sales %}
 
-            <h6 class="mb-4"><i>*All sales are listed in reverse chronological order, i.e. most recent first.</i></h6>
+                <!-- The total number of sales -->
 
-            <div class="table-responsive">
+                <div class="mb-4">
+                    <h5>Total sales: <span class="total-figure">{{ total_sales|intcomma }}</span></h5>
+                </div>
 
-                <table class="table table-bordered">
+                <!-- Table showing all sales -->
 
-                    <thead class="table-header-bg-2">
-                        <tr>
-                            <th scope="col">Fruit</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Proceeds (¥)</th>
-                            <th scope="col">Sale Date & Time</th>
-                            <th scope="col" class="col-center-align">Actions</th>
-                        </tr>
-                    </thead>
+                <h6 class="mb-4"><i>*All sales are listed in reverse chronological order, i.e. most recent first.</i></h6>
 
-                    <tbody class="table-body-bg">
+                <div class="table-responsive">
 
-                        {% for sale in sales %}
+                    <table class="table table-bordered">
 
+                        <thead class="table-header-bg-2">
                             <tr>
-                                <td>{{ sale.fruit_name|capfirst }}</td>
-                                <td>{{ sale.quantity|intcomma }}</td>
-                                <td>{{ sale.proceeds|intcomma }}</td>
-                                <td>{{ sale.sold_on|date:"Y-m-d" }}, {{ sale.sold_on|time:"H:i" }}</td>
-                                <td class="col-center-align">
-                                    <!-- Edit button -->
-                                    <a href="{% url 'sale_update' sale.pk %}"  class="btn btn-outline-primary btn-sm mr-2" role="button">Update</a>
-
-                                    &nbsp;
-
-                                    <!-- Delete button -->
-                                    <form action="{% url 'sale_delete' sale.pk %}" method="POST" style="display:inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                                    </form>
-
-                                </td>
+                                <th scope="col">Fruit</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Proceeds (¥)</th>
+                                <th scope="col">Sale Date & Time</th>
+                                <th scope="col" class="col-center-align">Actions</th>
                             </tr>
+                        </thead>
 
-                        {% endfor %}
+                        <tbody class="table-body-bg">
 
-                    </tbody>
+                            {% for sale in sales %}
 
-                </table>
+                                <tr>
+                                    <td>{{ sale.fruit_name|capfirst }}</td>
+                                    <td>{{ sale.quantity|intcomma }}</td>
+                                    <td>{{ sale.proceeds|intcomma }}</td>
+                                    <td>{{ sale.sold_on|date:"Y-m-d" }}, {{ sale.sold_on|time:"H:i" }}</td>
+                                    <td class="col-center-align">
+                                        <!-- Edit button -->
+                                        <a href="{% url 'sale_update' sale.pk %}"  class="btn btn-outline-primary btn-sm mr-2" role="button">Update</a>
 
-            </div>
+                                        &nbsp;
 
-            <!-- Add new sale button and csv file upload button -->
-            <div class="text-center">
-                <a href="{% url 'sale_create' %}" class="btn btn-primary mr-2" role="button">Add New Sale</a>
-                &nbsp;
-                <a href="{% url 'sale_upload' %}" class="btn btn-primary" role="button">Batch Upload</a>
-            </div>
+                                        <!-- Delete button -->
+                                        <form action="{% url 'sale_delete' sale.pk %}" method="POST" style="display:inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                        </form>
+
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <!-- Add new sale button and csv file upload button -->
+
+                <div class="table-footer-buttons">
+                    <a href="{% url 'sale_create' %}" class="btn btn-primary mr-2" role="button">Add New Sale</a>
+                    &nbsp;
+                    <a href="{% url 'sale_upload' %}" class="btn btn-primary" role="button">Batch Upload</a>
+                </div>
+
+                <!-- Pagination controls -->
+
+                {% if sales.has_other_pages %}
+
+                    <div class="pagination-block mx-3">
+
+                        <ul class="pagination">
+
+                            <!-- Previous page arrow -->
+                            {% if sales.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page={{ sales.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#" >&laquo;</a></li>
+                            {% endif %}
+
+                            <!-- Page numbers -->
+                            {% for i in sales.paginator.page_range %}
+                                <!-- Active page -->
+                                {% if sales.number == i %}
+                                    <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                                <!-- Inactive pages -->
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Next page arrow -->
+                            {% if sales.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ sales.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#" >&raquo;</a></li>
+                            {% endif %}
+
+                        </ul>
+
+                    </div>
+
+                {% endif %}
 
             <!-- If there is no sales information, display a notification -->
 

@@ -13,6 +13,14 @@
 
             {% if fruits %}
 
+                <!-- The total number of fruits -->
+
+                <div class="mb-4">
+                    <h5>Total fruits: <span class="total-figure">{{ total_fruits|intcomma }}</span></h5>
+                </div>
+
+                <!-- Table showing all fruits -->
+
                 <h6 class="mb-4"><i>*All stock items are listed in reverse chronological order, i.e. most recently updated first.</i></h6>
 
                 <div class="table-responsive">

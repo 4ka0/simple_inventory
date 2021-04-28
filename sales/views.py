@@ -5,6 +5,7 @@ from datetime import datetime
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Sale, CsvUploadFile
 from .forms import SaleCreateForm, SaleUpdateForm, CsvUploadForm
@@ -14,7 +15,26 @@ from stock.models import Fruit
 @login_required
 def sale_list(request):
     sales = Sale.objects.order_by("-sold_on")
-    return render(request, "sales/sale_list.html", {"sales": sales})
+    total_sales = sales.count()
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(sales, 10)
+
+    try:
+        sales = paginator.page(page)
+    except PageNotAnInteger:
+        sales = paginator.page(1)
+    except EmptyPage:
+        sales = paginator.page(paginator.num_pages)
+
+    return render(
+        request,
+        "sales/sale_list.html",
+        {
+            "total_sales": total_sales,
+            "sales": sales
+        }
+    )
 
 
 @login_required

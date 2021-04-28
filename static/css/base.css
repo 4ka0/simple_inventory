@@ -153,7 +153,7 @@ td {
     word-wrap: break-word;
 }
 
-#total-sales {
+.total-figure {
     color: #e76f51;
 }
 

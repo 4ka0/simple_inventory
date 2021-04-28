@@ -9,6 +9,8 @@ from .forms import StockForm
 @login_required
 def stock_list(request):
     fruits = Fruit.objects.order_by("-updated_on")
+    total_fruits = fruits.count()
+
     page = request.GET.get('page', 1)
     paginator = Paginator(fruits, 10)
 
@@ -19,7 +21,14 @@ def stock_list(request):
     except EmptyPage:
         fruits = paginator.page(paginator.num_pages)
 
-    return render(request, "stock/stock_list.html", {"fruits": fruits})
+    return render(
+        request,
+        "stock/stock_list.html",
+        {
+            "total_fruits": total_fruits,
+            "fruits": fruits,
+        }
+    )
 
 
 @login_required
