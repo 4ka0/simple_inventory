@@ -12,7 +12,7 @@ def stock_list(request):
     total_fruits = fruits.count()
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(fruits, 10)
+    paginator = Paginator(fruits, 8)
 
     try:
         fruits = paginator.page(page)

@@ -18,7 +18,7 @@ def sale_list(request):
     total_sales = sales.count()
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(sales, 10)
+    paginator = Paginator(sales, 8)
 
     try:
         sales = paginator.page(page)
