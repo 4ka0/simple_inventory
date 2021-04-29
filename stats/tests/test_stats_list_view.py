@@ -477,15 +477,15 @@ class StatsListTests(TestCase):
         month_sales_with_bd = build_sales_details(sorted_sales)
         self.assertEqual(
             sorted_sales[0].details_str,
-            "Banana: ¥2700 (15), Kiwi: ¥1920 (12), Orange: ¥1260 (9), Lemon: ¥720 (6), Apple: ¥300 (3)",
+            "Banana: ¥2,700 (15), Kiwi: ¥1,920 (12), Orange: ¥1,260 (9), Lemon: ¥720 (6), Apple: ¥300 (3)",
         )
         self.assertEqual(
             sorted_sales[1].details_str,
-            "Banana: ¥1800 (10), Kiwi: ¥1280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
+            "Banana: ¥1,800 (10), Kiwi: ¥1,280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
         )
         self.assertEqual(
             sorted_sales[2].details_str,
-            "Banana: ¥1800 (10), Kiwi: ¥1280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
+            "Banana: ¥1,800 (10), Kiwi: ¥1,280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
         )
 
     # viewのテスト

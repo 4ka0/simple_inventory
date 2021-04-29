@@ -163,11 +163,12 @@ def build_sales_details(sales):
             row.details = sorted_details
 
             # Convert the details dict into a str
+            # format() used to insert commas into long numbers
             for entry in row.details:
                 row.details_str += (
                     entry.capitalize()
                     + ": ¥"
-                    + str(row.details[entry][0])
+                    + "{:,}".format(row.details[entry][0])
                     + " ("
                     + str(row.details[entry][1])
                     + "), "
