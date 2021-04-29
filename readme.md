@@ -1,6 +1,6 @@
 # simple_inventory
 
-A simple webapp for managing the stock and sales information for an imaginary fruit shop.
+A simple webapp for managing the stock and sales information for an imaginary fruit shop 🍋🍊🍐.
 
 You can do the following:
 * add, edit, and delete stock information;
@@ -10,7 +10,7 @@ You can do the following:
 
 [Live demo](https://jjl-simple-inventory.herokuapp.com)
 
-## To run
+## To clone and run
 * Clone this repo into a location of your choosing.<br>
 `git clone https://github.com/4ka0/simple_inventory.git`
 * Move into the project folder.<br>
