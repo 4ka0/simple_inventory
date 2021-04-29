@@ -42,19 +42,19 @@
 ### Screenshots:
 
 Home page:</br>
-<img src="screenshots/home.png" width="700"></br>
+<img src="screenshots/home.png"></br>
 
 Stock list:</br>
-<img src="screenshots/stock-list.png" width="700"></br>
+<img src="screenshots/stock-list.png"></br>
 
 Sale list:</br>
-<img src="screenshots/sale-list.png" width="700"></br>
+<img src="screenshots/sale-list.png"></br>
 
 Sale create:</br>
-<img src="screenshots/sale-create.png" width="700"></br>
+<img src="screenshots/sale-create.png"></br>
 
 Sale upload:</br>
-<img src="screenshots/sale-upload.png" width="700"></br>
+<img src="screenshots/sale-upload.png"></br>
 
 Statistics:</br>
-<img src="screenshots/stats.png" width="700"></br>
+<img src="screenshots/stats.png"></br>
