@@ -17,7 +17,7 @@ def sale_list(request):
     sales = Sale.objects.order_by("-sold_on")
     total_sales = sales.count()
 
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(sales, 8)
 
     try:
@@ -30,10 +30,7 @@ def sale_list(request):
     return render(
         request,
         "sales/sale_list.html",
-        {
-            "total_sales": total_sales,
-            "sales": sales
-        }
+        {"total_sales": total_sales, "sales": sales},
     )
 
 

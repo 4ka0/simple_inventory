@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .forms import StockForm
+from ..forms import StockForm
 
 
 class StockFormTests(TestCase):
@@ -52,8 +52,8 @@ class StockFormTests(TestCase):
             form_output.append([boundfield.label, boundfield.data])
 
         expected_output = [
-            ["名称", "lemon"],
-            ["単価", 200],
+            ["Name", "lemon"],
+            ["Price", 200],
         ]
 
         self.assertEqual(form_output, expected_output)

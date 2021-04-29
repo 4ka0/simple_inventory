@@ -8,8 +8,8 @@ from django.utils import timezone
 from users.models import CustomUser
 from stock.models import Fruit
 from sales.models import Sale
-from .views import (
-    get_total_proceeds,
+from ..views import (
+    calculate_total_proceeds,
     get_sales_for_period,
     sort_sales_by_day,
     sort_sales_by_month,
@@ -373,8 +373,8 @@ class StatsListTests(TestCase):
     # ヘルパー関数のテスト
 
     def test_total_proceeds_calculated_correctly(self):
-        self.assertEqual(get_total_proceeds(self.sales), 18400)
-        self.assertNotEqual(get_total_proceeds(self.sales), 0)
+        self.assertEqual(calculate_total_proceeds(self.sales), 18400)
+        self.assertNotEqual(calculate_total_proceeds(self.sales), 0)
 
     @freeze_time("2020-04-17")
     def test_get_sales_for_period_days(self):
@@ -421,18 +421,18 @@ class StatsListTests(TestCase):
     def test_sort_sales_by_month(self):
         month_sales = get_sales_for_period(self.sales, "months")
         sorted_sales = sort_sales_by_month(month_sales)
-        # 各行の日付を確認する
+        # Check date of each row
         self.assertEqual(
-            sorted_sales[0].date,
-            datetime(year=2020, month=4, day=1, tzinfo=pytz.UTC),
+            sorted_sales[0].date.replace(tzinfo=None),
+            datetime(year=2020, month=4, day=1),
         )
         self.assertEqual(
-            sorted_sales[1].date,
-            datetime(year=2020, month=3, day=1, tzinfo=pytz.UTC),
+            sorted_sales[1].date.replace(tzinfo=None),
+            datetime(year=2020, month=3, day=1),
         )
         self.assertEqual(
-            sorted_sales[2].date,
-            datetime(year=2020, month=2, day=1, tzinfo=pytz.UTC),
+            sorted_sales[2].date.replace(tzinfo=None),
+            datetime(year=2020, month=2, day=1),
         )
         # 各saleの日付がその行の日付範囲に一致することを確認する
         for row in sorted_sales:
@@ -443,10 +443,14 @@ class StatsListTests(TestCase):
                     lower_bound + dateutil.relativedelta.relativedelta(day=31)
                 )
                 # 比較できるように、naiveなdatetimeオブジェクトに変換する
-                lower_bound = lower_bound.replace(tzinfo=pytz.UTC)
-                upper_bound = upper_bound.replace(tzinfo=pytz.UTC)
-                self.assertTrue(sale.sold_on >= lower_bound)
-                self.assertTrue(sale.sold_on < upper_bound)
+                lower_bound = lower_bound.replace(tzinfo=None)
+                upper_bound = upper_bound.replace(tzinfo=None)
+                self.assertTrue(
+                    sale.sold_on.replace(tzinfo=None) >= lower_bound
+                )
+                self.assertTrue(
+                    sale.sold_on.replace(tzinfo=None) < upper_bound
+                )
 
     @freeze_time("2020-04-17")
     def test_build_sales_details_by_day(self):
@@ -455,15 +459,15 @@ class StatsListTests(TestCase):
         day_sales_with_bd = build_sales_details(sorted_sales)
         self.assertEqual(
             sorted_sales[0].details_str,
-            "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
+            "Banana: ¥900 (5), Kiwi: ¥640 (4), Orange: ¥420 (3), Lemon: ¥240 (2), Apple: ¥100 (1)",
         )
         self.assertEqual(
             sorted_sales[1].details_str,
-            "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
+            "Banana: ¥900 (5), Kiwi: ¥640 (4), Orange: ¥420 (3), Lemon: ¥240 (2), Apple: ¥100 (1)",
         )
         self.assertEqual(
             sorted_sales[2].details_str,
-            "banana: 900円 (5), kiwi: 640円 (4), orange: 420円 (3), lemon: 240円 (2), apple: 100円 (1)",
+            "Banana: ¥900 (5), Kiwi: ¥640 (4), Orange: ¥420 (3), Lemon: ¥240 (2), Apple: ¥100 (1)",
         )
 
     @freeze_time("2020-04-17")
@@ -473,15 +477,15 @@ class StatsListTests(TestCase):
         month_sales_with_bd = build_sales_details(sorted_sales)
         self.assertEqual(
             sorted_sales[0].details_str,
-            "banana: 2700円 (15), kiwi: 1920円 (12), orange: 1260円 (9), lemon: 720円 (6), apple: 300円 (3)",
+            "Banana: ¥2700 (15), Kiwi: ¥1920 (12), Orange: ¥1260 (9), Lemon: ¥720 (6), Apple: ¥300 (3)",
         )
         self.assertEqual(
             sorted_sales[1].details_str,
-            "banana: 1800円 (10), kiwi: 1280円 (8), orange: 840円 (6), lemon: 480円 (4), apple: 200円 (2)",
+            "Banana: ¥1800 (10), Kiwi: ¥1280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
         )
         self.assertEqual(
             sorted_sales[2].details_str,
-            "banana: 1800円 (10), kiwi: 1280円 (8), orange: 840円 (6), lemon: 480円 (4), apple: 200円 (2)",
+            "Banana: ¥1800 (10), Kiwi: ¥1280 (8), Orange: ¥840 (6), Lemon: ¥480 (4), Apple: ¥200 (2)",
         )
 
     # viewのテスト
@@ -520,8 +524,18 @@ class StatsListTests(TestCase):
         user = CustomUser.objects.create_user("testuser", "123456")
         self.client.force_login(user=user)
         response = self.client.get(reverse("stats_list"))
-        self.assertContains(response, "<h4>販売統計管理</h4>", 1)
-        self.assertContains(response, "<h5>累計</h5>", 1)
-        self.assertContains(response, "<h5>月別</h5>", 1)
-        self.assertContains(response, "売り上げ</th>", 2)
-        self.assertContains(response, "内訳</th>", 2)
+        self.assertContains(response, "<h5>Total sales:", 1)
+        self.assertContains(
+            response, "<p>Sales for the last three days:</p>", 1
+        )
+        self.assertContains(
+            response, "<p>Sales for the last three months:</p>", 1
+        )
+        self.assertContains(response, "Day</th>", 1)
+        self.assertContains(response, "Month</th>", 1)
+        self.assertContains(response, "Proceeds</th>", 2)
+        self.assertContains(
+            response,
+            "Breakdown (descending order of proceeds, quantities in parentheses)</th>",
+            2,
+        )

@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.test import TestCase
 
-from .models import Fruit
+from ..models import Fruit
 from users.models import CustomUser
 
 from freezegun import freeze_time

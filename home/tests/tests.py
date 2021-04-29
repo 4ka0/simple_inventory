@@ -5,33 +5,47 @@ from users.models import CustomUser
 
 
 class TestHomePageNotLoggedIn(TestCase):
-
     def test_homepage_when_not_logged_in(self):
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, '/accounts/login/?next=/')
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "<p>Welcome to your very own fairly simple inventory management system.</p>",
+            1,
+        )
+        # The below string only displayed when user not logged in
+        self.assertContains(
+            response,
+            "But be careful, you must be logged in to do any of this (security is tight here",
+            1,
+        )
 
 
 class TestHomePageLoggedIn(TestCase):
-
     def setUp(self):
-        user = CustomUser.objects.create_user('testuser', '123456')
+        user = CustomUser.objects.create_user("testuser", "123456")
         self.client.force_login(user=user)
 
     def test_homepage_by_url_when_logged_in(self):
-        response = self.client.get('/')
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, "home.html")
 
     def test_homepage_by_name_when_logged_in(self):
-        response = self.client.get(reverse('home'))
+        response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'home.html')
+        self.assertTemplateUsed(response, "home.html")
 
     def test_homepage_content_when_logged_in(self):
-        response = self.client.get(reverse('home'))
-        self.assertContains(response, 'role="button">ログアウト</a>', 1)
-        self.assertContains(response, '管理TOP</h4>', 1)
-        self.assertContains(response, '販売情報管理</a>', 1)
-        self.assertContains(response, '果物マスタ管理</a>', 1)
-        self.assertContains(response, '販売統計情報</a>', 1)
+        response = self.client.get(reverse("home"))
+        self.assertContains(
+            response,
+            "<p>Welcome to your very own fairly simple inventory management system.</p>",
+            1,
+        )
+        # The below string only displayed when user is logged in
+        self.assertContains(
+            response,
+            "Feel free to add some &#127819;&#127823;&#127818;, generate some sales, and check out your stats.",
+            1,
+        )

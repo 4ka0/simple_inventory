@@ -14,7 +14,7 @@ class CsvUploadFormTests(TestCase):
             "required": "Please select a CSV file.",
             "missing": "A file has not been provided.",
             "invalid": "The file format is not correct. Please select a CSV file.",
-            "contradiction": "ファイルを送信するか、「クリア」と書かれたチェックボックスにチェックを入れるか、のどちらかにしてください。",
+            "contradiction": "Please either submit a file or check the clear checkbox, not both.",
             "max_length": "",
         }
         form = CsvUploadForm()
@@ -24,7 +24,7 @@ class CsvUploadFormTests(TestCase):
 
     def test_csv_form_field_labels(self):
         form = CsvUploadForm()
-        self.assertEqual(form.fields["file_name"].label, "ファイル名")
+        self.assertEqual(form.fields["file_name"].label, "Filename")
 
     def test_csv_form_when_valid(self):
         with open("sales/tests/test_sales.csv", "r") as csv_file:

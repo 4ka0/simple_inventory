@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.test import TestCase
 
-from .models import Fruit
+from ..models import Fruit
 from users.models import CustomUser
 
 
@@ -32,7 +32,7 @@ class CreateViewTests(TestCase):
         user = CustomUser.objects.create_user("testuser", "123456")
         self.client.force_login(user=user)
         response = self.client.get(reverse("stock_create"))
-        self.assertContains(response, "果物登録")
-        self.assertContains(response, "名称")
-        self.assertContains(response, "単価")
-        self.assertContains(response, "戻る")
+        self.assertContains(response, "New Stock")
+        self.assertContains(response, "Name")
+        self.assertContains(response, "Price")
+        self.assertContains(response, "Cancel")

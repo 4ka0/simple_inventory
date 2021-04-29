@@ -60,9 +60,9 @@ class SaleCreateFormTests(TestCase):
             form_output.append([boundfield.label, boundfield.data])
 
         expected_output = [
-            ["果物", apple.id],
-            ["個数", 3],
-            ["販売日時", timezone.now()],
+            ["Fruit", apple.id],
+            ["Quantity", 3],
+            ["Sale date and time", timezone.now()],
         ]
 
         self.assertEqual(form_output, expected_output)

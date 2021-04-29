@@ -68,9 +68,7 @@ def sort_sales_by_day(sales):
     one_day_b4 = now_day - dateutil.relativedelta.relativedelta(days=1)
     two_days_b4 = now_day - dateutil.relativedelta.relativedelta(days=2)
 
-    row1 = Row(
-        date=now_day, proceeds=0, sales=[], details={}, details_str=""
-    )
+    row1 = Row(date=now_day, proceeds=0, sales=[], details={}, details_str="")
     row2 = Row(
         date=one_day_b4, proceeds=0, sales=[], details={}, details_str=""
     )
@@ -98,8 +96,8 @@ def sort_sales_by_month(sales):
     now = timezone.localtime(timezone.now())
 
     now_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    one_month_b4 = (now_month - dateutil.relativedelta.relativedelta(months=1))
-    two_month_b4 = (now_month - dateutil.relativedelta.relativedelta(months=2))
+    one_month_b4 = now_month - dateutil.relativedelta.relativedelta(months=1)
+    two_month_b4 = now_month - dateutil.relativedelta.relativedelta(months=2)
 
     row1 = Row(
         date=now_month, proceeds=0, sales=[], details={}, details_str=""
@@ -117,10 +115,7 @@ def sort_sales_by_month(sales):
 
         if sold_on_jpt >= now_month:
             row1.sales.append(sale)
-        elif (
-            sold_on_jpt >= one_month_b4
-            and sale.sold_on < now_month
-        ):
+        elif sold_on_jpt >= one_month_b4 and sale.sold_on < now_month:
             row2.sales.append(sale)
         else:
             row3.sales.append(sale)

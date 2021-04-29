@@ -172,15 +172,15 @@ class SaleUploadTests(TestCase):
         self.client.force_login(user=user)
         response = self.client.get(reverse("sale_list"))
 
-        self.assertContains(response, "apple", 1)
+        self.assertContains(response, "Apple", 1)
         self.assertContains(response, "270", 1)
         self.assertContains(response, "2000-01-01, 12:00", 1)
 
-        self.assertContains(response, "lemon", 1)
+        self.assertContains(response, "Lemon", 1)
         self.assertContains(response, "400", 1)
         self.assertContains(response, "2021-02-02, 10:05", 1)
 
-        self.assertContains(response, "orange", 1)
+        self.assertContains(response, "Orange", 1)
         self.assertContains(response, "550", 1)
         self.assertContains(response, "2021-02-03, 10:10", 1)
 

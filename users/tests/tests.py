@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .models import CustomUser
+from ..models import CustomUser
 
 from freezegun import freeze_time
 

@@ -11,7 +11,7 @@ def stock_list(request):
     fruits = Fruit.objects.order_by("-updated_on")
     total_fruits = fruits.count()
 
-    page = request.GET.get('page', 1)
+    page = request.GET.get("page", 1)
     paginator = Paginator(fruits, 8)
 
     try:
@@ -27,7 +27,7 @@ def stock_list(request):
         {
             "total_fruits": total_fruits,
             "fruits": fruits,
-        }
+        },
     )
 
 

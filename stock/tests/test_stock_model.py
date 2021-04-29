@@ -1,8 +1,8 @@
 from django.urls import reverse
 from django.test import TestCase
 
-from .models import Fruit
-from .forms import StockForm
+from ..models import Fruit
+from ..forms import StockForm
 from users.models import CustomUser
 
 from freezegun import freeze_time
