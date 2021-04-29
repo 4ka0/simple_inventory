@@ -1,9 +1,14 @@
 # simple_inventory
 
+A simple webapp for managing the stock and sales information for an imaginary fruit shop.
 
+You can do the following:
+* add, edit, and delete stock information;
+* add, edit, and delete sales information;
+* batch upload sales information using a csv file; and
+* view statistics for the last three days or three months.
 
 [Live demo](https://jjl-simple-inventory.herokuapp.com)
-
 
 ## To run
 * Clone this repo into a location of your choosing.<br>
@@ -24,7 +29,6 @@
 * Go to the home page and log in.<br>
 
 * The project directory contains a file called "sales_data.csv" that can be used for bulk uploading of test sales information.
-
 
 ### Built using:
 
