@@ -170,7 +170,7 @@ def build_sales_details(sales):
                     + ": ¥"
                     + "{:,}".format(row.details[entry][0])
                     + " ("
-                    + str(row.details[entry][1])
+                    + "{:,}".format(row.details[entry][1])
                     + "), "
                 )
             # Remove trailing comma and space
