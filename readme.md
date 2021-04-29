@@ -14,9 +14,9 @@ Possible improvements: Implement social authentication and allow users to upload
 
 ## To run
 * Clone this repo into a location of your choosing.<br>
-`git clone https://github.com/4ka0/kudamonoya.git`
+`git clone https://github.com/4ka0/simple_inventory.git`
 * Move into the project folder.<br>
-`cd kudamonoya`
+`cd simple_inventory`
 * Activate a virtual environment<br>
 (Example using venv:)<br>
 `python3 -m venv venv`<br>
