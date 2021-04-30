@@ -1,4 +1,4 @@
-# simple_inventory
+# Simple Inventory
 
 A simple webapp for managing the stock and sales information for an imaginary fruit shop 🍋🍊🍐.
 
@@ -21,7 +21,7 @@ You can do the following:
 `source venv/bin/activate`
 * Install the dependencies.<br>
 `pip install -r requirements.txt`
-* Run the tests.<br>
+* Run the tests if you wish.<br>
 `python manage.py test`
 * Run the local server.<br>
 `python manage.py runserver`
