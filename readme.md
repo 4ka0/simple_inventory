@@ -34,13 +34,14 @@ You can do the following:
 * Python 3.7.9
 * Django 3.1.7
 * Bootstrap 4
-* Black 20.8b1
-* Doverage 5.5
 * django-crispy-forms 1.11.1
-* Environs 9.3.2
+* environs 9.3.2
 * Freezegun 1.1.0
-* Python-dateutil 2.8.1
+* python-dateutil 2.8.1
+* Black 20.8b1
+* Coverage 5.5
 * Visual Studio Code 1.55.2
+* macOS 10.15.7
 
 ### Screenshots:
 
