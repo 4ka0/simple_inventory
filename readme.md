@@ -27,7 +27,7 @@ You can do the following:
 `python manage.py runserver`
 * Access "localhost:8000" in your browser.<br>
 * Go to the home page and log in.<br>
-* The project directory contains a file called "sales_data.csv" that can be used for bulk uploading of test sales information.
+* The project directory contains a file called "sales_data.csv" that can be used to try out the bulk uploading of test sales information.
 
 ### Built using:
 
