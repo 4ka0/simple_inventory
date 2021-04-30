@@ -23,3 +23,4 @@ sqlparse==0.4.1
 toml==0.10.2
 typed-ast==1.4.3
 typing-extensions==3.7.4.3
+whitenoise==5.2.0
