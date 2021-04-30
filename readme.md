@@ -8,7 +8,9 @@ You can do the following:
 * batch upload sales information using a csv file; and
 * view statistics for the last three days or three months.
 
-[Live demo](https://jjl-simple-inventory.herokuapp.com) (May take a little time to spin up as it's hosted on the Heroku free tier.)
+[Live demo](https://jjl-simple-inventory.herokuapp.com) 
+
+(May take a little time to spin up as it's hosted on the Heroku free tier.)
 
 ## To clone and run
 * Clone this repo into a location of your choosing.<br>
