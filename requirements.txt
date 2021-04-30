@@ -10,6 +10,7 @@ django-cache-url==3.2.3
 django-crispy-forms==1.11.1
 environs==9.3.2
 freezegun==1.1.0
+gunicorn==20.1.0
 marshmallow==3.11.1
 mypy-extensions==0.4.3
 pathspec==0.8.1
