@@ -1,4 +1,4 @@
-# simple_inventory
+# Simple Inventory
 
 A simple webapp for managing the stock and sales information for an imaginary fruit shop 🍋🍊🍐.
 
