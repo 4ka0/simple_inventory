@@ -5,7 +5,7 @@ click==7.1.2
 coverage==5.5
 dj-database-url==0.5.0
 dj-email-url==1.0.2
-Django==3.1.7
+Django==3.1.14
 django-cache-url==3.2.3
 django-crispy-forms==1.11.1
 environs==9.3.2
